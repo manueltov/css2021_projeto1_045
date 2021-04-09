@@ -29,7 +29,7 @@ public class Client {
 			Date inicio =  DateUtils.convertLocalDateTimeToDate(LocalDateTime.of(2021, 5, 3, 20, 0));
 			Date fim =  DateUtils.convertLocalDateTimeToDate(LocalDateTime.of(2021, 5, 3, 21, 0));
 			es.addDate(d,inicio, fim);
-			es.setEmpresa(2);
+			es.setEmpresa(1);
 			es.createEvent();
 			app.stopRun();
 		}catch (Exception e) {

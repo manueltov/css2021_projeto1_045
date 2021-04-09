@@ -27,7 +27,8 @@ public class EventCatalog {
 	}
 
 	public void addNewEvent(String nome, EventType eventType, List<TimeFrame> timeFrames, Empresa empresa) {
-		em.persist(new Event(nome,eventType,timeFrames,empresa));		
+		Event e = new Event(nome,eventType,timeFrames,empresa);
+		em.persist(e);		
 	}
 
 	public Event getEventByName(String event) throws EventNotFoundException {
