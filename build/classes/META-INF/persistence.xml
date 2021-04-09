@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="domain-model-jpa"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>business.empresa.Empresa</class>
+		<class>business.event.Event</class>
+		<class>business.event.TimeFrame</class>
+		<class>business.eventactivity.EventActivity</class>
+		<class>business.eventtype.EventType</class>
+		<class>business.instalacao.Instalacao</class>
+		<class>business.seat.Seat</class>
+		<class>business.ticket.Ticket</class>
+		<class>business.ticket.SeatTicket</class>
+		<properties>
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://dbserver.alunos.di.fc.ul.pt:3306/css045" />
+			<property name="javax.persistence.jdbc.user" value="css045" />
+			<property name="javax.persistence.jdbc.driver"
+				value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.password"
+				value="css045123" />
+		</properties>
+	</persistence-unit>
+</persistence>

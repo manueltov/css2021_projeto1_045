@@ -1,13 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>pt.ulisboa.ciencias.di</groupId>
-	<artifactId>domain-model-jpa</artifactId>
-	<version>2.1</version>
-	<description>An example of the application of the Domain Model pattern 
-  	using Metadata Data Mapper pattern to a Derby/MySQL database (via JPA + JDBC). 
-  	Transactions are managed at the Handler level, not at the Catalog level.
-  </description>
+	<artifactId>projeto1.grupo045</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.derby</groupId>
@@ -21,15 +18,24 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
-			<artifactId>org.eclipse.persistence.jpa</artifactId>
+			<artifactId>eclipselink</artifactId>
 			<version>2.6.4</version>
 		</dependency>
 	</dependencies>
 	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>3.8.1</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
