@@ -115,11 +115,13 @@ public class NewEventHandler {
 	public void addDate(Date date,Date inicio,Date fim) throws ApplicationException {
 		try {
 			if(inicio.after(fim)) {
-				throw new ApplicationException("");
+				throw new ApplicationException("Start after end");
 			}
 			for (TimeFrame tf : timeFrames) {
+				System.out.println(date);
+				System.out.println(tf.getDate());
 				if(!date.after(tf.getDate())){
-					throw new ApplicationException("");
+					throw new ApplicationException("Before already decided dates");
 				}
 			}
 			timeFrames.add(new TimeFrame(date,inicio, fim));
