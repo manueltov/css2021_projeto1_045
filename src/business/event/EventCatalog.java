@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import business.empresa.Company;
+import business.company.Company;
 import business.eventtype.EventType;
 import business.exceptions.EventNotFoundException;
 

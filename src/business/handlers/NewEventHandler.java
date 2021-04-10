@@ -8,8 +8,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import business.empresa.Company;
-import business.empresa.CompanyCatalog;
+import business.company.Company;
+import business.company.CompanyCatalog;
 import business.event.EventCatalog;
 import business.event.TimeFrame;
 import business.eventtype.EventType;

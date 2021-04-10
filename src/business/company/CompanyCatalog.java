@@ -1,4 +1,4 @@
-package business.empresa;
+package business.company;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

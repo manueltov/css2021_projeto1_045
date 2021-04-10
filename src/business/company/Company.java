@@ -1,4 +1,4 @@
-package business.empresa;
+package business.company;
 
 import java.util.ArrayList;
 import java.util.List;

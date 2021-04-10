@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import business.empresa.Company;
+import business.company.Company;
 import business.eventactivity.EventActivity;
 import business.eventtype.EventType;
 import business.installation.Installation;
