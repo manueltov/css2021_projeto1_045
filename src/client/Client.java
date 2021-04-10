@@ -6,11 +6,15 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
+import business.event.TimeFrame;
+import business.seat.Seat;
 import dateUtils.DateUtils;
 import dbutils.DatabaseUtils;
 import facade.services.EventService;
 import facade.services.InstalacaoService;
+import facade.services.TicketService;
 import facade.startup.EventSys;
 
 public class Client extends Thread{
@@ -43,12 +47,118 @@ public class Client extends Thread{
 			System.out.println("----------END TESTING----------");
 			System.out.println("UC2\nRESULTS: "+results+"/5 "+((double) results/5.0)*100+"%");
 			sleep(1000);
+			results = 0;
+			System.out.println("---------TESTING UC3-----------");
+			results += test12(app);
+			results += test13(app);
+			results += test14(app);
+			results += test15(app);
+			results += test16(app);
+			System.out.println("----------END TESTING----------");
+			System.out.println("UC3\nRESULTS: "+results+"/5 "+((double) results/5.0)*100+"%");
+			sleep(1000);
 
 
 			app.stopRun();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static int test16(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			TicketService ts = app.getTicketService();
+			List<TimeFrame> tfs = ts.setEvento("Open dos exames");
+			Date d = tfs.get(0).getDate();
+			List<Seat> seats = ts.setDate(d);
+			Seat s1 = seats.get(0);
+			Seat s2 = seats.get(1);
+			if(!s1.getFila().contentEquals("A") || s1.getNumero() != 1 || !s2.getFila().contentEquals("A") || s2.getNumero() != 2)
+				throw new Exception("Wrong seats");
+			ts.addLugar(s1.getFila(), s1.getNumero());
+			ts.addLugar(s2.getFila(), s2.getNumero());
+			ts.setEmail("u3@gmail.com");
+			System.out.println("Test 16: Passed");
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Test 16: Failed");
+		}
+		return 0;
+	}
+
+	private static int test15(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			TicketService ts = app.getTicketService();
+			ts.setEvento("Festival Estou de Ferias").forEach(System.out::println);
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
+			ts.setDate(d);
+			ts.addLugar("B", 1);
+			ts.setEmail("u2@gmail.com");
+			System.out.println("Test 15: Failed");
+			return 0;
+		}catch (Exception e) {
+			System.out.println("Test 15: Passed");
+		}
+		return 1;
+	}
+
+	private static int test14(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			TicketService ts = app.getTicketService();
+			ts.setEvento("Bye Semestre X").forEach(System.out::println);;
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
+			ts.setDate(d);
+			ts.addLugar("B", 2);
+			ts.setEmail("u2@gmail.com");
+			System.out.println("Test 14: Passed");
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Test 14: Failed");
+		}
+		return 0;
+	}
+
+	private static int test13(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			TicketService ts = app.getTicketService();
+			ts.setEvento("Bye Semestre X").forEach(System.out::println);;
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
+			ts.setDate(d);
+			ts.addLugar("B", 1);
+			ts.setEmail("u2@gmail.com");
+			System.out.println("Test 13: Failed");
+			return 0;
+		}catch (Exception e) {
+			System.out.println("Test 13: Passed");
+		}
+		return 1;
+	}
+
+	private static int test12(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			TicketService ts = app.getTicketService();
+			ts.setEvento("Bye Semestre X").forEach(System.out::println);;
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
+			ts.setDate(d);
+			ts.addLugar("A", 1);
+			ts.addLugar("A", 2);
+			ts.addLugar("B", 1);
+			ts.setEmail("u1@gmail.com");
+			ts.reserveTickets();
+			System.out.println("Test 12: Passed");
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Test 12: Failed");
+		}
+		return 0;
 	}
 
 	private static int test11(EventSys app) {
@@ -102,6 +212,7 @@ public class Client extends Thread{
 			is.setSaleDate(d);
 			is.setInstalacao("Micro Pavilhao");
 			is.setIndividualPrice(20);
+			is.setInstalacaoToEvento();
 			System.out.println("Test 9: Failed");
 			return 0;
 		}catch (Exception e) {

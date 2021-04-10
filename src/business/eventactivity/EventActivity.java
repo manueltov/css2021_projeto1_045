@@ -26,11 +26,20 @@ import business.ticket.Ticket;
 
 
 @Entity(name = "eventActivity")
+@NamedQueries({
+	@NamedQuery(name=EventActivity.GET_TIME_FRAMES_OF_EVENT, 
+    query="SELECT ea.timeFrame FROM eventActivity ea WHERE ea.event.id = :"+EventActivity.EVENT_ACTIVITY_EVENT_ID),
+	@NamedQuery(name=EventActivity.GET_ACTIVITY_OF_EVENT_DATE, 
+    query="SELECT ea FROM eventActivity ea WHERE ea.event.id = :"+EventActivity.EVENT_ACTIVITY_EVENT_ID+
+    " and ea.timeFrame.date = :"+EventActivity.EVENT_ACTIVITY_TIME_FRAME_DATE)
+})
 public class EventActivity {
 	
-	public static final String GET_TICKETS_OF_DATE_EVENT = "eventActivity.getTicketsOfDateEvent";
-	public static final String EVENT_ACTIVITY_EVENT = "event";
-	public static final String EVENT_ACTIVITY_TIME_FRAME = "timeFrame";
+	public static final String GET_TIME_FRAMES_OF_EVENT = "eventActivity.getTimeFramesOfEvent";
+	public static final String GET_ORDERED_TICKETS_OF_DATE_EVENT = "eventActivity.getOrderedTicketsOfDateEvent";
+	public static final String EVENT_ACTIVITY_EVENT_ID = "event";
+	public static final String EVENT_ACTIVITY_TIME_FRAME_DATE = "date";
+	public static final String GET_ACTIVITY_OF_EVENT_DATE = "eventActivity.getActivityOfEventDate";
 	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -98,6 +107,19 @@ public class EventActivity {
 		}
 		Collections.sort(seats);
 		return seats;
+	}
+	
+	
+	public int getId() {
+		return id;
+	}
+	
+	public Instalacao getInstalacao() {
+		return instalacao;
+	}
+	
+	public Event getEvent() {
+		return event;
 	}
 	
 	

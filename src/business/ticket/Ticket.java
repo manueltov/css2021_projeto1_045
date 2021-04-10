@@ -29,6 +29,8 @@ public class Ticket {
 	@JoinColumn
 	private EventActivity eventActivity;
 	
+	private String email;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private TicketStatus status = TicketStatus.AVAILABLE;
@@ -77,5 +79,14 @@ public class Ticket {
 	public boolean isAvailable() {
 		return status == TicketStatus.AVAILABLE;
 	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
 	
 }

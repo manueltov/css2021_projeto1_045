@@ -13,6 +13,8 @@ import business.instalacao.Instalacao;
 @Entity
 public class Seat implements Comparable<Seat>{
 
+	
+
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
@@ -21,25 +23,25 @@ public class Seat implements Comparable<Seat>{
 	private Instalacao instalacao;
 	
 	@Column(nullable = false)
-	private String fila;
+	private String row;
 	
 	@Column(nullable = false)
-	private int numero;
+	private int number;
 	
 	Seat(){}
 	
 	public Seat(Instalacao instalacao,String fila,int numero) {
 		this.instalacao = instalacao;
-		this.fila = fila;
-		this.numero = numero;
+		this.row = fila;
+		this.number = numero;
 	}
 	
 	public String getFila() {
-		return fila;
+		return row;
 	}
 	
 	public int getNumero() {
-		return numero;
+		return number;
 	}
 	
 	public int getId() {
@@ -52,11 +54,16 @@ public class Seat implements Comparable<Seat>{
 
 	@Override
 	public int compareTo(Seat o) {
-		int f = fila.compareTo(o.fila);
+		int f = row.compareTo(o.row);
 		if(f == 0) {
-			return numero-o.numero;
+			return number-o.number;
 		}
 		return f;
+	}
+	
+	@Override
+	public String toString() {
+		return row +" - "+number;
 	}
 	
 }

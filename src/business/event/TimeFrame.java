@@ -52,4 +52,9 @@ public class TimeFrame implements Comparable<TimeFrame> {
 		return this.date.compareTo(o.date);
 	}
 	
+	@Override
+	public String toString() {
+		return date + " | "+start+" - "+end;
+	}
+	
 }

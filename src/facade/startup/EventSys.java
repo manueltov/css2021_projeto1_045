@@ -5,10 +5,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import business.handlers.NewEventHandler;
+import business.handlers.SellIndividualTicketHandler;
 import business.handlers.SetInstalacaoHandler;
 import facade.exceptions.ApplicationException;
 import facade.services.EventService;
 import facade.services.InstalacaoService;
+import facade.services.TicketService;
 
 public class EventSys {
 	
@@ -34,6 +36,10 @@ public class EventSys {
 	
 	public InstalacaoService getInstalacaoService() {
 		return new InstalacaoService(new SetInstalacaoHandler(emf));
+	}
+
+	public TicketService getTicketService() {
+		return new TicketService(new SellIndividualTicketHandler(emf));
 	}
 
 }

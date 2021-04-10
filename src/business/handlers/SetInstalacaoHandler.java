@@ -124,7 +124,9 @@ public class SetInstalacaoHandler {
 	public void setInstalacaoToEvent() throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventActivityCatalog eventActivityCatalog = new EventActivityCatalog(em);
-
+		if(instalacao == null) {
+			throw new ApplicationException("Not possible to set place to event");
+		}
 		try {
 			em.getTransaction().begin();
 			eventActivityCatalog.createNewActivities(event,saleDate,instalacao);

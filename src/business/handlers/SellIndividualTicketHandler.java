@@ -1,6 +1,8 @@
 package business.handlers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,30 +14,35 @@ import business.eventactivity.EventActivity;
 import business.eventactivity.EventActivityCatalog;
 import business.instalacao.InstalacaoSentada;
 import business.seat.Seat;
-import business.seat.SeatCatalog;
+import business.ticket.SeatTicket;
+import business.ticket.SeatTicketCatalog;
 import facade.exceptions.ApplicationException;
 
 public class SellIndividualTicketHandler {
 	
 	private EntityManagerFactory emf;
 	private Event evento;
-	private TimeFrame[] tfs;
+	private List<TimeFrame> tfs;
 	private EventActivity eventActivity;
+	private List<SeatTicket> tickets;
+	private String email;
 	
 	public SellIndividualTicketHandler(EntityManagerFactory emf) {
 		this.emf = emf;
+		tickets = new ArrayList<>();
 	}
 	
-	public TimeFrame[] setEvento(String event) throws ApplicationException {
+	public List<TimeFrame> setEvento(String event) throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventCatalog eventCatalog = new EventCatalog(em);
+		EventActivityCatalog eventActivityCatalog = new EventActivityCatalog(em);
 		try {
 			em.getTransaction().begin();
 			Event e = eventCatalog.getEventByName(event);
 			if(!(e.getInstalacao() instanceof InstalacaoSentada)) {
 				throw new ApplicationException("You can not buy individual tickets for this event.");
 			}
-			tfs = e.getOpenTimeFrames();
+			tfs = eventActivityCatalog.getTimeFramesOfEvent(e.getId());
 			evento = e;
 			em.getTransaction().commit();
 			return tfs;
@@ -49,18 +56,20 @@ public class SellIndividualTicketHandler {
 		}
 	}
 	
-	public Iterable<Seat> setDate(Date d) throws ApplicationException {
-		
+	public List<Seat> setDate(Date d) throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventActivityCatalog eventActivityCatalog = new EventActivityCatalog(em);
-		
+		SeatTicketCatalog seatTicketCatalog	= new SeatTicketCatalog(em);
 		try {
 			em.getTransaction().begin();
-			
-			return null;
+			this.eventActivity = eventActivityCatalog.getEventActivityOfEventDate(evento.getId(),d);
+			List<Seat> seats = seatTicketCatalog.getOpenSeatsOfActivity(eventActivity.getId()); 
+			em.getTransaction().commit();
+			return seats;
 		}catch (Exception e) {
-
-			throw new ApplicationException("",e);
+			if(em.getTransaction().isActive())
+				em.getTransaction().rollback();
+			throw new ApplicationException("Not possible to set date.",e);
 		}
 		finally {
 			em.close();
@@ -73,7 +82,49 @@ public class SellIndividualTicketHandler {
 		}
 		
 		EntityManager em = emf.createEntityManager();
-		SeatCatalog seatCatalog = new SeatCatalog(em);
+		SeatTicketCatalog seatTicketCatalog = new SeatTicketCatalog(em);
+		try {
+			em.getTransaction().begin();
+			SeatTicket st = seatTicketCatalog.getTicketOfRowAndNumber(eventActivity.getId(),row,number);
+			if(!st.isAvailable()) {
+				throw new ApplicationException("You can not buy this seat.");
+			}
+			tickets.add(st);
+			em.getTransaction().commit();
+		}catch (Exception e) {
+			if(em.getTransaction().isActive())
+				em.getTransaction().rollback();
+			throw new ApplicationException("Not possible to add ticket.",e);
+		}
+		finally {
+			em.close();
+		}
 	}
 	
+	public void setEmail(String email) throws ApplicationException {
+		if(tickets.isEmpty() || eventActivity == null) {
+			throw new ApplicationException("You can not yet perfom this action");
+		}
+		this.email = email;
+	}
+	
+	public void reserveTickets() throws ApplicationException {
+		EntityManager em = emf.createEntityManager();
+		SeatTicketCatalog seatTicketCatalog = new SeatTicketCatalog(em);
+		
+		try {
+			em.getTransaction().begin();
+			for (SeatTicket st : tickets) {
+				seatTicketCatalog.reserve(email,st);
+			}
+			em.getTransaction().commit();
+		}catch (Exception e) {
+			if(em.getTransaction().isActive())
+				em.getTransaction().rollback();
+			throw new ApplicationException("Not possible to finalize reservation",e);
+		}
+		finally {
+			em.close();
+		}
+	}
 }
