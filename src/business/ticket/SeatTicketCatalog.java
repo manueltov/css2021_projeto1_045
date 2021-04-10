@@ -62,7 +62,7 @@ public class SeatTicketCatalog {
 		em.merge(st);
 	}
 
-	public void sellBilhetePasse(int eventID,int tickets, String email) throws ApplicationException{
+	public void sellPassTicket(int eventID,int tickets, String email) throws ApplicationException{
 		List<EventActivity> activities = new ArrayList<>();
 		try {
 			TypedQuery<EventActivity> query = em.createNamedQuery(EventActivity.GET_ACTIVITIES_OF_EVENT, EventActivity.class);

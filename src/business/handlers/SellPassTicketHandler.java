@@ -12,39 +12,39 @@ import business.ticket.TicketCatalog;
 import facade.dto.FakePaymentINFO;
 import facade.exceptions.ApplicationException;
 
-public class SellPasseTicketHandler {
+public class SellPassTicketHandler {
 	
 	private EntityManagerFactory emf;
-	private Event evento;
+	private Event event;
 	private SeatType seatType;
 	
-	public SellPasseTicketHandler(EntityManagerFactory emf) {
+	public SellPassTicketHandler(EntityManagerFactory emf) {
 		this.emf = emf;
 	}
 	
-	public long setEvento(String event) throws ApplicationException {
+	public long setEvent(String eventName) throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventCatalog eventCatalog = new EventCatalog(em);
 		EventActivityCatalog eventActivityCatalog = new EventActivityCatalog(em);
 		try {
 			em.getTransaction().begin();
-			Event e = eventCatalog.getEventByName(event);
-			if(e.getPassePrice() < 0) {
-				throw new ApplicationException("You can not buy passe tickets for this event.");
+			Event e = eventCatalog.getEventByName(eventName);
+			if(e.getPassPrice() < 0) {
+				throw new ApplicationException("You can not buy pass tickets for this event.");
 			}
-			evento = e;
-			long numberOfBilhetesPasse = 0;
-			seatType = evento.getEventType().getTipoDeLugares();
-			if(seatType == SeatType.EM_PE)
-				numberOfBilhetesPasse = eventActivityCatalog.getNumberOfBilhetesPasseEmPe(e.getId());
+			event = e;
+			long numberOfTicketsPass = 0;
+			seatType = event.getEventType().getTypeOfSeats();
+			if(seatType == SeatType.STANDING)
+				numberOfTicketsPass = eventActivityCatalog.getNumberOfPassStandingTickets(e.getId());
 			else {
-				numberOfBilhetesPasse = eventActivityCatalog.getNumberOfBilhetesPasseSentado(e.getId());
+				numberOfTicketsPass = eventActivityCatalog.getNumberOfPassSeatedTickets(e.getId());
 			}
 			em.getTransaction().commit();
-			if(numberOfBilhetesPasse == 0) {
-				throw new ApplicationException("No bilhetes passe available for this event.");
+			if(numberOfTicketsPass == 0) {
+				throw new ApplicationException("No tickets pass available for this event.");
 			}
-			return numberOfBilhetesPasse;
+			return numberOfTicketsPass;
 		}catch (Exception e) {
 			if(em.getTransaction().isActive())
 				em.getTransaction().rollback();
@@ -61,11 +61,11 @@ public class SellPasseTicketHandler {
 		TicketCatalog ticketCatalog = new TicketCatalog(em);
 		try {
 			em.getTransaction().begin();
-			if(seatType == SeatType.EM_PE) {
-				ticketCatalog.sellBilhetePasse(evento.getId(),tickets,email);
+			if(seatType == SeatType.STANDING) {
+				ticketCatalog.sellPassTicket(event.getId(),tickets,email);
 			}
 			else {
-				seatTicketCatalog.sellBilhetePasse(evento.getId(),tickets,email);
+				seatTicketCatalog.sellPassTicket(event.getId(),tickets,email);
 			}
 			em.getTransaction().commit();
 			return new FakePaymentINFO(email);

@@ -8,8 +8,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import business.empresa.Empresa;
-import business.empresa.EmpresaCatalog;
+import business.empresa.Company;
+import business.empresa.CompanyCatalog;
 import business.event.EventCatalog;
 import business.event.TimeFrame;
 import business.eventtype.EventType;
@@ -19,8 +19,8 @@ import facade.exceptions.ApplicationException;
 public class NewEventHandler {
 	private EntityManagerFactory emf;
 	private EventType eventType;
-	private Empresa empresa;
-	private String nome;
+	private Company company;
+	private String name;
 	private List<TimeFrame> timeFrames;
 
 	public NewEventHandler(EntityManagerFactory emf) {
@@ -52,17 +52,17 @@ public class NewEventHandler {
 		EventCatalog eventCatalog = new EventCatalog(em);
 		try {
 			em.getTransaction().begin();
-			if(nome == null) {
+			if(name == null) {
 				throw new ApplicationException("No name defined");
 			}
-			if(empresa == null) {
+			if(company == null) {
 				throw new ApplicationException("No company defined");
 			}
 			if(timeFrames.isEmpty()) {
 				throw new ApplicationException("No dates defined");
 			}
 			
-			eventCatalog.addNewEvent(nome,eventType,timeFrames,empresa);
+			eventCatalog.addNewEvent(name,eventType,timeFrames,company);
 			em.getTransaction().commit();
 		}catch (Exception e) {
 			if (em.getTransaction().isActive()) {
@@ -74,47 +74,47 @@ public class NewEventHandler {
 		}
 	}
 	
-	public void setTipo(String tipo) throws ApplicationException {
+	public void setType(String type) throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventTypeCatalog eventTypeCatalog = new EventTypeCatalog(em);
 		try {
 			em.getTransaction().begin();
-			eventType = eventTypeCatalog.getEventTypeByName(tipo);
+			eventType = eventTypeCatalog.getEventTypeByName(type);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
 			}
-			throw new ApplicationException("Event type "+tipo+" not found.", e);
+			throw new ApplicationException("Event type "+type+" not found.", e);
 		} finally {
 			em.close();
 		}
 	}
 	
-	public void setNome(String nome) throws ApplicationException {
+	public void setName(String name) throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventCatalog eventCatalog = new EventCatalog(em);
 		try {
 			em.getTransaction().begin();
-			if(!eventCatalog.nameIsAvailable(nome)) {
+			if(!eventCatalog.nameIsAvailable(name)) {
 				throw new ApplicationException("");
 			}
 			em.getTransaction().commit();
-			this.nome = nome;
+			this.name = name;
 		} catch (Exception e) {
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
 			}
-			throw new ApplicationException("Nome "+nome+" not available.", e);
+			throw new ApplicationException("Name "+name+" not available.", e);
 		} finally {
 			em.close();
 		}
 	}
 	
 	
-	public void addDate(Date date,Date inicio,Date fim) throws ApplicationException {
+	public void addDate(Date date,Date start,Date end) throws ApplicationException {
 		try {
-			if(inicio.after(fim)) {
+			if(start.after(end)) {
 				throw new ApplicationException("Start after end");
 			}
 			for (TimeFrame tf : timeFrames) {
@@ -124,22 +124,22 @@ public class NewEventHandler {
 					throw new ApplicationException("Before already decided dates");
 				}
 			}
-			timeFrames.add(new TimeFrame(date,inicio, fim));
+			timeFrames.add(new TimeFrame(date,start, end));
 		}catch (Exception e) {
 			throw new ApplicationException("Not possible to add new dates",e);
 		}	
 	}
 	
-	public void setEmpresa(int empresa) throws ApplicationException {
+	public void setCompany(int company) throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
-		EmpresaCatalog empresaCatalog = new EmpresaCatalog(em);
+		CompanyCatalog companyCatalog = new CompanyCatalog(em);
 		try {
 			em.getTransaction().begin();
-			Empresa e = empresaCatalog.getEmpresaById(empresa);
+			Company e = companyCatalog.getCompanyById(company);
 			if(!e.haveLicense(eventType)) {
 				throw new ApplicationException("Company not allowed");
 			}
-			this.empresa = e;
+			this.company = e;
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			if (em.getTransaction().isActive()) {

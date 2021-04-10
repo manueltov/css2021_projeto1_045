@@ -10,7 +10,7 @@ import business.event.Event;
 import business.event.TimeFrame;
 import business.exceptions.TicketNotFoundException;
 import business.exceptions.TimeFrameNotFoundException;
-import business.instalacao.Instalacao;
+import business.installation.Installation;
 import business.ticket.Ticket;
 import business.ticket.TicketStatus;
 
@@ -23,20 +23,20 @@ public class EventActivityCatalog {
 		this.em = em;
 	}
 
-	public void createNewActivities(Event event, Date saleDate, Instalacao instalacao) {
-		event.setInstalacao(instalacao);
+	public void createNewActivities(Event event, Date saleDate, Installation installation) {
+		event.setInstallation(installation);
 		event.setSaleDate(saleDate);
-		TimeFrame[] dates = event.getDatas();
+		TimeFrame[] dates = event.getDates();
 		for (int i = 0; i < dates.length; i++) {
 			TimeFrame tf = dates[i];
-			EventActivity ea = new EventActivity(event, tf,instalacao);
-			instalacao.addActivity(ea);
+			EventActivity ea = new EventActivity(event, tf,installation);
+			installation.addActivity(ea);
 			event.addNewActivities(ea);
 			em.merge(ea);
 			
 		}
 		em.merge(event);
-		em.merge(instalacao);
+		em.merge(installation);
 		
 	}
 
@@ -74,7 +74,7 @@ public class EventActivityCatalog {
 		}
 	}
 
-	public long getNumberOfBilhetesPasseEmPe(int id) throws TicketNotFoundException {
+	public long getNumberOfPassStandingTickets(int id) throws TicketNotFoundException {
 		try {
 			TypedQuery<Long> query = em.createNamedQuery(EventActivity.GET_NUMBER_OF_TICKETS_AVAILABLE, Long.class);
 			query.setParameter(EventActivity.EVENT_ACTIVITY_EVENT_ID, id);
@@ -86,7 +86,7 @@ public class EventActivityCatalog {
 		}
 	}
 
-	public long getNumberOfBilhetesPasseSentado(int id) throws TicketNotFoundException {
+	public long getNumberOfPassSeatedTickets(int id) throws TicketNotFoundException {
 		try {
 			TypedQuery<Long> query = em.createNamedQuery(EventActivity.GET_NUMBER_OF_TICKETS_AVAILABLE_SEAT, Long.class);
 			query.setParameter(EventActivity.EVENT_ACTIVITY_EVENT_ID, id);

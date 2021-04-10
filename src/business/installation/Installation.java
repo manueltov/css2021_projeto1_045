@@ -1,4 +1,4 @@
-package business.instalacao;
+package business.installation;
 
 import java.util.Date;
 import java.util.List;
@@ -21,19 +21,19 @@ import javax.persistence.OneToMany;
 import business.eventactivity.EventActivity;
 
 @NamedQueries({
-	@NamedQuery(name=Instalacao.GET_ALL_INSTALACOES, query="SELECT inst FROM Instalacao inst"),
-	@NamedQuery(name=Instalacao.INSTALACAO_BY_NAME, query="SELECT inst FROM Instalacao inst WHERE inst.name = :" +Instalacao.INSTALACAO_NAME)
+	@NamedQuery(name=Installation.GET_ALL_INSTALLATIONS, query="SELECT inst FROM Installation inst"),
+	@NamedQuery(name=Installation.INSTALLATION_BY_NAME, query="SELECT inst FROM Installation inst WHERE inst.name = :" +Installation.INSTALLATION_NAME)
 })
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "INSTALACAOTYPE", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue(value = "Instalacao")
-public class Instalacao {
+@DiscriminatorColumn(name = "INSTALLATIONTYPE", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "Installation")
+public class Installation {
 
-	public static final String GET_ALL_INSTALACOES = "Instalacao.getAllNames";
-	public static final String INSTALACAO_NAME = "name";
-	public static final String INSTALACAO_BY_NAME = "Instalacao.findByName";
+	public static final String GET_ALL_INSTALLATIONS = "Installation.getAllNames";
+	public static final String INSTALLATION_NAME = "name";
+	public static final String INSTALLATION_BY_NAME = "Installation.findByName";
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -41,21 +41,21 @@ public class Instalacao {
 	@Column(nullable = false, unique = true)
 	private String name;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "instalacao")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "installation")
 	private List<EventActivity> activities;
 
 	@Column(nullable = false)
 	private int maxCapacity;
 	
-	Instalacao(){}
+	Installation(){}
 	
-	public Instalacao(String nome,int max_capacity) {
-		this.name = nome;
+	public Installation(String name,int max_capacity) {
+		this.name = name;
 		this.maxCapacity = max_capacity;		
 	}
 	
 	
-	public String getNome() {
+	public String getName() {
 		return name;
 	}
 	

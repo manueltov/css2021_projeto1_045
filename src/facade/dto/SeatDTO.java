@@ -3,27 +3,27 @@ package facade.dto;
 public class SeatDTO {
 
 	
-	private String fila;
-	private int numero;
-	private String instalacao;
+	private String row;
+	private int number;
+	private String installation;
 	
-	public SeatDTO(String instalacao,String fila,int numero) {
-		this.fila = fila;
-		this.numero = numero;
-		this.instalacao = instalacao;
+	public SeatDTO(String installation,String row,int number) {
+		this.row = row;
+		this.number = number;
+		this.installation = installation;
 	}
 	
-	public int getNumero() {
-		return numero;
+	public int getNumber() {
+		return number;
 	}
-	public String getInstalacao() {
-		return instalacao;
+	public String getInstallation() {
+		return installation;
 	}
-	public String getFila() {
-		return fila;
+	public String getRow() {
+		return row;
 	}
 	@Override
 	public String toString() {
-		return "Instalacao: "+instalacao+" | "+fila+" - "+numero;
+		return "Installation: "+installation+" | "+row+" - "+number;
 	}
 }

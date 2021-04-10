@@ -19,20 +19,20 @@ public class IndividualTicketService {
 		this.individualTicketHandler = individualTicketHandler;
 	}
 	
-	public List<TimeFrame> setEvento(String evento) throws ApplicationException{
-		return this.individualTicketHandler.setEvento(evento);
+	public List<TimeFrame> setEvent(String event) throws ApplicationException{
+		return this.individualTicketHandler.setEvent(event);
 	}
 	
 	public List<SeatDTO> setDate(Date d) throws ApplicationException {
 		 List<Seat> aux =  this.individualTicketHandler.setDate(d);
 		 List<SeatDTO> r = new ArrayList<>();
 		 for (Seat s : aux) {
-			r.add(new SeatDTO(s.getInstalacao().getNome(), s.getFila(), s.getNumero()));
+			r.add(new SeatDTO(s.getInstallation().getName(), s.getRow(), s.getNumber()));
 		}
 		return r;
 	}
 	
-	public void addLugar(String row,int number) throws ApplicationException {
+	public void addSeat(String row,int number) throws ApplicationException {
 		this.individualTicketHandler.addSeatToTicket(row, number);
 	}
 	

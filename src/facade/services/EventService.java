@@ -24,25 +24,25 @@ public class EventService {
 		ArrayList<EventTypeDto> aux = new ArrayList<>();
 		Iterable<EventType> evts = newEventhandler.tryCreateEvent();
 		for (EventType et : evts) {
-			aux.add(new EventTypeDto(et.getTipo(), et.getMaxWatch(), et.getTipoDeLugares().toString()));			
+			aux.add(new EventTypeDto(et.getType(), et.getMaxWatch(), et.getTypeOfSeats().toString()));			
 		}
 		return aux;
 	}
 	
-	public void setTipoDeEvento(String tipo) throws ApplicationException {
-		newEventhandler.setTipo(tipo);
+	public void setTypeOfEvent(String type) throws ApplicationException {
+		newEventhandler.setType(type);
 	}
 	
-	public void setNome(String nome) throws ApplicationException {
-		newEventhandler.setNome(nome);
+	public void setName(String name) throws ApplicationException {
+		newEventhandler.setName(name);
 	}
 	
-	public void setEmpresa(int empresa) throws ApplicationException {
-		newEventhandler.setEmpresa(empresa);
+	public void setCompany(int company) throws ApplicationException {
+		newEventhandler.setCompany(company);
 	}
 	
-	public void addDate(Date date,Date inicio,Date fim) throws ApplicationException {
-		newEventhandler.addDate(date,inicio, fim);
+	public void addDate(Date date,Date start,Date end) throws ApplicationException {
+		newEventhandler.addDate(date,start, end);
 	}
 	
 	

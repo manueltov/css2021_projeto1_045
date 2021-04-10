@@ -15,12 +15,12 @@ import javax.persistence.NamedQuery;
 import business.eventtype.EventType;
 
 @Entity
-@NamedQuery(name=Empresa.FIND_BY_ID, query="SELECT e FROM Empresa e WHERE e.id = :" + 
-		Empresa.EMPRESA_ID)
-public class Empresa {
+@NamedQuery(name=Company.FIND_BY_ID, query="SELECT e FROM Company e WHERE e.id = :" + 
+		Company.COMPANY_ID)
+public class Company {
 
-	public static final String FIND_BY_ID = "Empresa.findById";
-	public static final String EMPRESA_ID = "id";
+	public static final String FIND_BY_ID = "Company.findById";
+	public static final String COMPANY_ID = "id";
 
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,15 +31,15 @@ public class Empresa {
 	
 	@ManyToMany
 	@JoinTable(name = "EVENTS_ALLOWED")
-	private List<EventType> tiposDeEventos;
+	private List<EventType> typesOfEvents;
 	
 	
-	Empresa(){}
+	Company(){}
 	
-	public Empresa(List<EventType> authEvents) {
-		tiposDeEventos = new ArrayList<>();
+	public Company(List<EventType> authEvents) {
+		typesOfEvents = new ArrayList<>();
 		for (EventType eventType : authEvents) {
-			tiposDeEventos.add(eventType);
+			typesOfEvents.add(eventType);
 		}
 	}
 	
@@ -47,13 +47,13 @@ public class Empresa {
 		return id;
 	}
 	
-	public List<EventType> getTiposDeEventos() {
-		return tiposDeEventos;
+	public List<EventType> getTypesOfEvents() {
+		return typesOfEvents;
 	}
 
 	public boolean haveLicense(EventType eventType) {
-		for (EventType ev : tiposDeEventos) {
-			if(ev.getTipo().contentEquals(eventType.getTipo())) {
+		for (EventType ev : typesOfEvents) {
+			if(ev.getType().contentEquals(eventType.getType())) {
 				return true;
 			}
 		}

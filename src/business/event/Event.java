@@ -7,10 +7,10 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import business.empresa.Empresa;
+import business.empresa.Company;
 import business.eventactivity.EventActivity;
 import business.eventtype.EventType;
-import business.instalacao.Instalacao;
+import business.installation.Installation;
 
 
 
@@ -36,7 +36,7 @@ public class Event {
 
 	@ElementCollection
 	@CollectionTable(name="DATES", joinColumns=@JoinColumn(name="id",referencedColumnName = "id"))
-	private List<TimeFrame> datas;
+	private List<TimeFrame> dates;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
 	private List<EventActivity> activities;
@@ -46,15 +46,15 @@ public class Event {
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Empresa empresa;
+	private Company company;
 
 	@ManyToOne
 	@JoinColumn
-	private Instalacao instalacao;
+	private Installation installation;
 
 
 	private double individualPrice;
-	private double passePrice;
+	private double passPrice;
 	
 	@Temporal(TemporalType.DATE)
 	private Date saleDate;
@@ -62,23 +62,23 @@ public class Event {
 	Event(){}
 
 
-	public Event(String nome, EventType eventType, List<TimeFrame> timeFrames, Empresa empresa) {
-		this.name = nome;
+	public Event(String name, EventType eventType, List<TimeFrame> timeFrames, Company company) {
+		this.name = name;
 		this.eventType = eventType;
-		this.datas = new ArrayList<>();
-		this.datas.addAll(timeFrames);
-		this.empresa = empresa;
+		this.dates = new ArrayList<>();
+		this.dates.addAll(timeFrames);
+		this.company = company;
 		this.individualPrice = -1;
-		this.passePrice = -1;
+		this.passPrice = -1;
 		this.activities = new ArrayList<>();
 	}
 
-	public Instalacao getInstalacao() {
-		return this.instalacao;
+	public Installation getInstallation() {
+		return this.installation;
 	}
 
-	public void setInstalacao(Instalacao instalacao) {
-		this.instalacao = instalacao;
+	public void setInstallation(Installation installation) {
+		this.installation = installation;
 	}
 
 
@@ -94,13 +94,13 @@ public class Event {
 		return eventType;
 	}
 
-	public Empresa getEmpresa() {
-		return empresa;
+	public Company getCompany() {
+		return company;
 	}
 
-	public TimeFrame[] getDatas() {
-		TimeFrame[] aux = new TimeFrame[datas.size()];
-		return datas.toArray(aux);
+	public TimeFrame[] getDates() {
+		TimeFrame[] aux = new TimeFrame[dates.size()];
+		return dates.toArray(aux);
 	}
 
 
@@ -113,18 +113,18 @@ public class Event {
 	}
 
 
-	public void setPassePrice(double passePrice) {
-		this.passePrice = passePrice;
+	public void setPassPrice(double passPrice) {
+		this.passPrice = passPrice;
 	}
 	
-	public double getPassePrice() {
-		return passePrice;
+	public double getPassPrice() {
+		return passPrice;
 	}
 
 
 	public Date getFirstDate() {
-		Collections.sort(datas);
-		return datas.get(0).getDate();
+		Collections.sort(dates);
+		return dates.get(0).getDate();
 	}
 	
 	public void setSaleDate(Date saleDate) {

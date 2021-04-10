@@ -34,8 +34,8 @@ public class SeatTicket extends Ticket{
 	
 	SeatTicket() {}
 	
-	public SeatTicket(EventActivity eventActivity,Seat s,double preco) {
-		super(eventActivity,preco);
+	public SeatTicket(EventActivity eventActivity,Seat s,double price) {
+		super(eventActivity,price);
 		this.seat = s;
 	}
 	

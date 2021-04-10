@@ -48,12 +48,12 @@ public class Ticket {
 	private TicketStatus status = TicketStatus.AVAILABLE;
 	
 	@Column(nullable = false)
-	private double preco;
+	private double price;
 	Ticket (){}
 	
-	public Ticket(EventActivity eventActivity,double preco) {
+	public Ticket(EventActivity eventActivity,double price) {
 		this.eventActivity = eventActivity;
-		this.preco = preco;
+		this.price = price;
 	}
 	
 	public boolean sell() {
@@ -84,8 +84,8 @@ public class Ticket {
 		return eventActivity;
 	}
 	
-	public double getPreco() {
-		return preco;
+	public double getPrice() {
+		return price;
 	}
 
 	public boolean isAvailable() {

@@ -35,25 +35,25 @@ public class EventType {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private SeatType tipoDeLugares;
+	private SeatType typeOfSeats;
 
 	EventType(){}
 
-	public EventType(String tipo,int maxWatch,SeatType tipoDeLugares) {
-		this.name = tipo;
+	public EventType(String type,int maxWatch,SeatType typeOfSeats) {
+		this.name = type;
 		this.maxWatch = maxWatch;
-		this.tipoDeLugares = tipoDeLugares;
+		this.typeOfSeats = typeOfSeats;
 	}
 
 	public int getMaxWatch() {
 		return maxWatch;
 	}
 
-	public SeatType getTipoDeLugares() {
-		return tipoDeLugares;
+	public SeatType getTypeOfSeats() {
+		return typeOfSeats;
 	}
 
-	public String getTipo() {
+	public String getType() {
 		return name;
 	}
 

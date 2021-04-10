@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import business.empresa.Empresa;
+import business.empresa.Company;
 import business.eventtype.EventType;
 import business.exceptions.EventNotFoundException;
 
@@ -26,8 +26,8 @@ public class EventCatalog {
 		}	
 	}
 
-	public void addNewEvent(String nome, EventType eventType, List<TimeFrame> timeFrames, Empresa empresa) {
-		Event e = new Event(nome,eventType,timeFrames,empresa);
+	public void addNewEvent(String name, EventType eventType, List<TimeFrame> timeFrames, Company company) {
+		Event e = new Event(name,eventType,timeFrames,company);
 		em.persist(e);		
 	}
 

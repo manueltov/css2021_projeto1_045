@@ -1,8 +1,8 @@
 package business.exceptions;
 
-public class EmpresaNotFoundException extends Exception {
+public class CompanyNotFoundException extends Exception {
 
-	public EmpresaNotFoundException(String string, Exception e) {
+	public CompanyNotFoundException(String string, Exception e) {
 	}
 
 	/**

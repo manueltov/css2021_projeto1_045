@@ -12,7 +12,7 @@ import business.event.EventCatalog;
 import business.event.TimeFrame;
 import business.eventactivity.EventActivity;
 import business.eventactivity.EventActivityCatalog;
-import business.instalacao.InstalacaoSentada;
+import business.installation.SeatedInstallation;
 import business.seat.Seat;
 import business.ticket.SeatTicket;
 import business.ticket.SeatTicketCatalog;
@@ -22,7 +22,7 @@ import facade.exceptions.ApplicationException;
 public class SellIndividualTicketHandler {
 	
 	private EntityManagerFactory emf;
-	private Event evento;
+	private Event event;
 	private List<TimeFrame> tfs;
 	private EventActivity eventActivity;
 	private List<SeatTicket> tickets;
@@ -33,18 +33,18 @@ public class SellIndividualTicketHandler {
 		tickets = new ArrayList<>();
 	}
 	
-	public List<TimeFrame> setEvento(String event) throws ApplicationException {
+	public List<TimeFrame> setEvent(String eventName) throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventCatalog eventCatalog = new EventCatalog(em);
 		EventActivityCatalog eventActivityCatalog = new EventActivityCatalog(em);
 		try {
 			em.getTransaction().begin();
-			Event e = eventCatalog.getEventByName(event);
-			if(!(e.getInstalacao() instanceof InstalacaoSentada)) {
+			Event e = eventCatalog.getEventByName(eventName);
+			if(!(e.getInstallation() instanceof SeatedInstallation)) {
 				throw new ApplicationException("You can not buy individual tickets for this event.");
 			}
 			tfs = eventActivityCatalog.getTimeFramesOfEvent(e.getId());
-			evento = e;
+			event = e;
 			em.getTransaction().commit();
 			return tfs;
 		}catch (Exception e) {
@@ -63,7 +63,7 @@ public class SellIndividualTicketHandler {
 		SeatTicketCatalog seatTicketCatalog	= new SeatTicketCatalog(em);
 		try {
 			em.getTransaction().begin();
-			this.eventActivity = eventActivityCatalog.getEventActivityOfEventDate(evento.getId(),d);
+			this.eventActivity = eventActivityCatalog.getEventActivityOfEventDate(event.getId(),d);
 			List<Seat> seats = seatTicketCatalog.getOpenSeatsOfActivity(eventActivity.getId()); 
 			em.getTransaction().commit();
 			return seats;
@@ -78,7 +78,7 @@ public class SellIndividualTicketHandler {
 	}
 	
 	public void addSeatToTicket(String row,int number) throws ApplicationException {
-		if(evento == null || eventActivity == null) {
+		if(event == null || eventActivity == null) {
 			throw new ApplicationException("You can not yet perform this action");
 		}
 		

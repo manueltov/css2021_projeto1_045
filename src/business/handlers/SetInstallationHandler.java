@@ -9,35 +9,35 @@ import business.event.Event;
 import business.event.EventCatalog;
 import business.event.TimeFrame;
 import business.eventactivity.EventActivityCatalog;
-import business.instalacao.Instalacao;
-import business.instalacao.InstalacaoCatalog;
-import business.instalacao.InstalacaoSentada;
+import business.installation.InstallationCatalog;
+import business.installation.SeatedInstallation;
+import business.installation.Installation;
 import business.seat.SeatType;
 import dateUtils.DateUtils;
 import facade.exceptions.ApplicationException;
 
-public class SetInstalacaoHandler {
+public class SetInstallationHandler {
 	private EntityManagerFactory emf;
 	private Event event;
-	private Instalacao instalacao;
+	private Installation installation;
 	private Date saleDate;
 
-	public SetInstalacaoHandler(EntityManagerFactory emf) {
+	public SetInstallationHandler(EntityManagerFactory emf) {
 		this.emf = emf;
 	}
 
-	public Iterable<Instalacao> getInstalacoes() throws ApplicationException{
+	public Iterable<Installation> getInstallations() throws ApplicationException{
 		EntityManager em = emf.createEntityManager();
-		InstalacaoCatalog instalacaoCatalog = new InstalacaoCatalog(em);
+		InstallationCatalog installationCatalog = new InstallationCatalog(em);
 		try {
 			em.getTransaction().begin();
-			Iterable<Instalacao> aux = instalacaoCatalog.getInstalacoes(); 
+			Iterable<Installation> aux = installationCatalog.getInstallations(); 
 			em.getTransaction().commit();
 			return aux;
 		}catch (Exception e) {
 			if(em.getTransaction().isActive())
 				em.getTransaction().rollback();
-			throw new ApplicationException("ERROR: Not possible to fetch instalacoes.",e);
+			throw new ApplicationException("ERROR: Not possible to fetch installations.",e);
 		}
 		finally {
 			em.close();
@@ -61,32 +61,32 @@ public class SetInstalacaoHandler {
 		}
 	}
 
-	public void setInstalacao(String instalacao) throws ApplicationException{
+	public void setInstallation(String installation) throws ApplicationException{
 		EntityManager em = emf.createEntityManager();
-		InstalacaoCatalog instalacaoCatalog = new InstalacaoCatalog(em);
+		InstallationCatalog installationCatalog = new InstallationCatalog(em);
 		try {
 			em.getTransaction().begin();
-			Instalacao i = instalacaoCatalog.getInstalacaoByName(instalacao);
-			if((i instanceof InstalacaoSentada) && this.event.getEventType().getTipoDeLugares() != SeatType.SENTADO) {
-				throw new ApplicationException("Invalid instalacao for this type of event");
+			Installation i = installationCatalog.getInstallationByName(installation);
+			if((i instanceof SeatedInstallation) && this.event.getEventType().getTypeOfSeats() != SeatType.SEATED) {
+				throw new ApplicationException("Invalid installation for this type of event");
 			}
-			if(!(i instanceof InstalacaoSentada) && this.event.getEventType().getTipoDeLugares() == SeatType.SENTADO)
-				throw new ApplicationException("Invalid instalacao for this type of event");
+			if(!(i instanceof SeatedInstallation) && this.event.getEventType().getTypeOfSeats() == SeatType.SEATED)
+				throw new ApplicationException("Invalid installation for this type of event");
 			if(i.getCapacity() > this.event.getEventType().getMaxWatch()) {
-				throw new ApplicationException("Invalid instalacao for this event because of capacity");
+				throw new ApplicationException("Invalid installation for this event because of capacity");
 			}
-			TimeFrame[] datas = event.getDatas();
+			TimeFrame[] datas = event.getDates();
 			for (int j = 0; j < datas.length; j++) {
 				if(!i.availableOn(datas[j].getDate())) {
 					throw new ApplicationException("Instalacao not free at all dates for this event");
 				}
 			}
-			this.instalacao = i;
+			this.installation = i;
 			em.getTransaction().commit();
 		}catch (Exception e) {
 			if(em.getTransaction().isActive())
 				em.getTransaction().rollback();
-			throw new ApplicationException("ERROR: Not possible to set instalacao.",e);
+			throw new ApplicationException("ERROR: Not possible to set installation.",e);
 		}
 		finally {
 			em.close();
@@ -102,12 +102,12 @@ public class SetInstalacaoHandler {
 		em.merge(this.event);
 	}
 
-	public void setPassePrice(double price) throws ApplicationException{
+	public void setPassPrice(double price) throws ApplicationException{
 		if(price <= 0) {
 			throw new ApplicationException("Price is not valid");
 		}
 		EntityManager em = emf.createEntityManager();
-		this.event.setPassePrice(price);
+		this.event.setPassPrice(price);
 		em.merge(this.event);
 	}
 
@@ -121,15 +121,15 @@ public class SetInstalacaoHandler {
 		this.saleDate = date;
 	}
 
-	public void setInstalacaoToEvent() throws ApplicationException {
+	public void setInstallationForEvent() throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventActivityCatalog eventActivityCatalog = new EventActivityCatalog(em);
-		if(instalacao == null) {
+		if(installation == null) {
 			throw new ApplicationException("Not possible to set place to event");
 		}
 		try {
 			em.getTransaction().begin();
-			eventActivityCatalog.createNewActivities(event,saleDate,instalacao);
+			eventActivityCatalog.createNewActivities(event,saleDate,installation);
 			em.getTransaction().commit();
 		}catch (Exception e) {
 			if(em.getTransaction().isActive()) {

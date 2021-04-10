@@ -29,7 +29,7 @@ public class TicketCatalog {
 		em.merge(t);
 	}
 
-	public void sellBilhetePasse(int eventID,int tickets, String email) throws ApplicationException{
+	public void sellPassTicket(int eventID,int tickets, String email) throws ApplicationException{
 		List<Ticket> ts = new ArrayList<>();
 		List<EventActivity> activities = new ArrayList<>();
 		try {

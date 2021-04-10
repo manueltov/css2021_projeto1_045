@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import business.instalacao.Instalacao;
+import business.installation.Installation;
 
 @Entity
 public class Seat implements Comparable<Seat>{
@@ -20,7 +20,7 @@ public class Seat implements Comparable<Seat>{
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
-	private Instalacao instalacao;
+	private Installation installation;
 	
 	@Column(nullable = false)
 	private String row;
@@ -30,17 +30,17 @@ public class Seat implements Comparable<Seat>{
 	
 	Seat(){}
 	
-	public Seat(Instalacao instalacao,String fila,int numero) {
-		this.instalacao = instalacao;
-		this.row = fila;
-		this.number = numero;
+	public Seat(Installation installation,String row,int number) {
+		this.installation = installation;
+		this.row = row;
+		this.number = number;
 	}
 	
-	public String getFila() {
+	public String getRow() {
 		return row;
 	}
 	
-	public int getNumero() {
+	public int getNumber() {
 		return number;
 	}
 	
@@ -48,8 +48,8 @@ public class Seat implements Comparable<Seat>{
 		return id;
 	}
 	
-	public Instalacao getInstalacao() {
-		return instalacao;
+	public Installation getInstallation() {
+		return installation;
 	}
 
 	@Override

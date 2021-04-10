@@ -18,8 +18,8 @@ import javax.persistence.OneToMany;
 
 import business.event.Event;
 import business.event.TimeFrame;
-import business.instalacao.Instalacao;
-import business.instalacao.InstalacaoSentada;
+import business.installation.SeatedInstallation;
+import business.installation.Installation;
 import business.seat.Seat;
 import business.ticket.SeatTicket;
 import business.ticket.Ticket;
@@ -68,25 +68,25 @@ public class EventActivity {
 	private TimeFrame timeFrame;
 	
 	@JoinColumn
-	private Instalacao instalacao;
+	private Installation installation;
 	
 	EventActivity() {}
 	
-	public EventActivity(Event event,TimeFrame timeFrame,Instalacao instalacao) {
+	public EventActivity(Event event,TimeFrame timeFrame,Installation installation) {
 		this.event = event;
 		this.timeFrame = timeFrame;
-		this.instalacao = instalacao;
+		this.installation = installation;
 		tickets = new ArrayList<>();
-		if(instalacao instanceof InstalacaoSentada) {
-			InstalacaoSentada aux = (InstalacaoSentada) instalacao;
-			Seat[] seats = aux.getLugares();
+		if(installation instanceof SeatedInstallation) {
+			SeatedInstallation aux = (SeatedInstallation) installation;
+			Seat[] seats = aux.getSeats();
 			for (int i = 0; i < seats.length; i++) {
 				Seat s = seats[i];
 				tickets.add(new SeatTicket(this,s,event.getIndividualPrice()));
 			}
 		}
 		else {
-			for (int i = 0; i < instalacao.getCapacity(); i++) {
+			for (int i = 0; i < installation.getCapacity(); i++) {
 				tickets.add(new Ticket(this, event.getIndividualPrice()));
 			}
 		}
@@ -107,7 +107,7 @@ public class EventActivity {
 	}
 
 	public Iterable<Seat> getOpenSeats() {
-		if(!(instalacao instanceof InstalacaoSentada)) {
+		if(!(installation instanceof SeatedInstallation)) {
 			return null;
 		}
 		List<Seat> seats = new ArrayList<>();
@@ -126,8 +126,8 @@ public class EventActivity {
 		return id;
 	}
 	
-	public Instalacao getInstalacao() {
-		return instalacao;
+	public Installation getInstallation() {
+		return installation;
 	}
 	
 	public Event getEvent() {
