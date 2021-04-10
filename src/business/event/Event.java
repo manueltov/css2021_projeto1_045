@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import business.empresa.Empresa;
+import business.eventactivity.EventActivity;
 import business.eventtype.EventType;
 import business.instalacao.Instalacao;
 
@@ -37,6 +38,9 @@ public class Event {
 	@CollectionTable(name="DATES", joinColumns=@JoinColumn(name="id",referencedColumnName = "id"))
 	private List<TimeFrame> datas;
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "event")
+	private List<EventActivity> activities;
+	
 	@JoinColumn(nullable = false)
 	private EventType eventType;
 
@@ -66,6 +70,7 @@ public class Event {
 		this.empresa = empresa;
 		this.individualPrice = -1;
 		this.passePrice = -1;
+		this.activities = new ArrayList<>();
 	}
 
 	public Instalacao getInstalacao() {
@@ -130,6 +135,36 @@ public class Event {
 		return saleDate;
 	}
 	
+	public void addNewActivities(EventActivity e) {
+		this.activities.add(e);
+	}
+	
+	public EventActivity[] getActivities() {
+		EventActivity[] aux = new EventActivity[activities.size()];
+		return activities.toArray(aux);
+	}
+
+
+	public TimeFrame[] getOpenTimeFrames() {
+		List<TimeFrame> aux1 = new ArrayList<>();
+		for (EventActivity eventActivity : activities) {
+			if(eventActivity.stillOpen()) {
+				aux1.add(eventActivity.getTimeFrame());
+			}
+		}		
+		TimeFrame[] aux2 = new TimeFrame[aux1.size()];
+		return aux1.toArray(aux2);
+	}
+
+
+	public EventActivity getActivityOfTimeFrame(TimeFrame timeFrameChoosed) {
+		for (EventActivity eventActivity : activities) {
+			if(eventActivity.getTimeFrame().compareTo(timeFrameChoosed) == 0) {
+				return eventActivity;
+			}
+		}
+		return null;
+	}
 	
 
 

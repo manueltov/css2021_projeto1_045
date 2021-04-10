@@ -25,9 +25,12 @@ public class EventActivityCatalog {
 			TimeFrame tf = dates[i];
 			EventActivity ea = new EventActivity(event, tf,instalacao);
 			instalacao.addActivity(ea);
+			event.addNewActivities(ea);
 			em.merge(ea);
-			em.merge(instalacao);
+			
 		}
+		em.merge(event);
+		em.merge(instalacao);
 		
 	}
 	

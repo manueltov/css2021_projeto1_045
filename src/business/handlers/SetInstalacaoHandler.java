@@ -128,7 +128,6 @@ public class SetInstalacaoHandler {
 		try {
 			em.getTransaction().begin();
 			eventActivityCatalog.createNewActivities(event,saleDate,instalacao);
-			em.merge(event);
 			em.getTransaction().commit();
 		}catch (Exception e) {
 			if(em.getTransaction().isActive()) {

@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import business.instalacao.Instalacao;
 
 @Entity
-public class Seat {
+public class Seat implements Comparable<Seat>{
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -48,6 +48,15 @@ public class Seat {
 	
 	public Instalacao getInstalacao() {
 		return instalacao;
+	}
+
+	@Override
+	public int compareTo(Seat o) {
+		int f = fila.compareTo(o.fila);
+		if(f == 0) {
+			return numero-o.numero;
+		}
+		return f;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package business.event;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -13,10 +14,10 @@ public class TimeFrame implements Comparable<TimeFrame> {
 	@Temporal(TemporalType.DATE) @Column(nullable = false)
 	private Date date;
 	
-	@Temporal(TemporalType.DATE) @Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP) @Column(nullable = false)
 	private Date start;
 	
-	@Temporal(TemporalType.DATE) @Column(nullable = false)
+	@Temporal(TemporalType.TIMESTAMP) @Column(nullable = false)
 	private Date end;
 	
 	TimeFrame(){}
@@ -37,6 +38,13 @@ public class TimeFrame implements Comparable<TimeFrame> {
 	
 	public Date getStart() {
 		return start;
+	}
+	
+	public LocalTime getLocalTimeStart() {
+		return LocalTime.from(start.toInstant());
+	}
+	public LocalTime getLocalTimeEnd() {
+		return LocalTime.from(end.toInstant());
 	}
 	
 	@Override

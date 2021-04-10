@@ -73,5 +73,9 @@ public class Ticket {
 	public double getPreco() {
 		return preco;
 	}
+
+	public boolean isAvailable() {
+		return status == TicketStatus.AVAILABLE;
+	}
 	
 }

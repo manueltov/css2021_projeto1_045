@@ -1,6 +1,7 @@
 package business.eventactivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import business.event.Event;
@@ -24,6 +27,11 @@ import business.ticket.Ticket;
 
 @Entity(name = "eventActivity")
 public class EventActivity {
+	
+	public static final String GET_TICKETS_OF_DATE_EVENT = "eventActivity.getTicketsOfDateEvent";
+	public static final String EVENT_ACTIVITY_EVENT = "event";
+	public static final String EVENT_ACTIVITY_TIME_FRAME = "timeFrame";
+	
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -66,6 +74,30 @@ public class EventActivity {
 	
 	public TimeFrame getTimeFrame() {
 		return timeFrame;
+	}
+	
+	public boolean stillOpen() {
+		for (Ticket ticket : tickets) {
+			if(ticket.isAvailable()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Iterable<Seat> getOpenSeats() {
+		if(!(instalacao instanceof InstalacaoSentada)) {
+			return null;
+		}
+		List<Seat> seats = new ArrayList<>();
+		for (Ticket ticket : tickets) {
+			if(ticket.isAvailable()) {
+				SeatTicket st = (SeatTicket) ticket;
+				seats.add(st.getSeat());
+			}
+		}
+		Collections.sort(seats);
+		return seats;
 	}
 	
 	
