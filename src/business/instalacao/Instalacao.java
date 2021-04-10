@@ -1,36 +1,39 @@
 package business.instalacao;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import business.eventactivity.EventActivity;
-import business.eventtype.EventType;
-import business.seat.Seat;
-import business.seat.SeatType;
-import javax.persistence.JoinColumn;
 
 @NamedQueries({
-	@NamedQuery(name=Instalacao.GET_ALL_NAMES, query="SELECT inst.name FROM Instalacao inst")
+	@NamedQuery(name=Instalacao.GET_ALL_INSTALACOES, query="SELECT inst FROM Instalacao inst"),
+	@NamedQuery(name=Instalacao.INSTALACAO_BY_NAME, query="SELECT inst FROM Instalacao inst WHERE inst.name = :" +Instalacao.INSTALACAO_NAME)
 })
+
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "INSTALACAOTYPE", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "Instalacao")
 public class Instalacao {
 
-	public static final String GET_ALL_NAMES = "Instalacao.getAllNames";
-
-	public static final String INSTALACAO_NAME = null;
-
-	public static final String FIND_BY_NAME = null;
+	public static final String GET_ALL_INSTALACOES = "Instalacao.getAllNames";
+	public static final String INSTALACAO_NAME = "name";
+	public static final String INSTALACAO_BY_NAME = "Instalacao.findByName";
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -38,14 +41,7 @@ public class Instalacao {
 	@Column(nullable = false, unique = true)
 	private String name;
 	
-	@JoinColumn(nullable = false)
-	private EventType eventType;
-
-	@OneToMany(cascade = CascadeType.ALL,mappedBy="instalacao")
-	private List<Seat> lugares;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "instalacao")
 	private List<EventActivity> activities;
 
 	@Column(nullable = false)
@@ -53,25 +49,14 @@ public class Instalacao {
 	
 	Instalacao(){}
 	
-	public Instalacao(String nome,EventType eventType,List<Seat> seats,int max_capacity) {
-		this.eventType = eventType;
+	public Instalacao(String nome,int max_capacity) {
 		this.name = nome;
-		this.maxCapacity = max_capacity;
-		if(eventType.getTipoDeLugares() == SeatType.SENTADO) {
-			lugares = new ArrayList<>();
-			for (Seat seat : seats) {
-				lugares.add(seat);
-			}
-		}			
+		this.maxCapacity = max_capacity;		
 	}
 	
 	
 	public String getNome() {
 		return name;
-	}
-	
-	public EventType getEventType() {
-		return eventType;
 	}
 	
 	public boolean availableOn(Date date) {
@@ -83,12 +68,12 @@ public class Instalacao {
 		return true;
 	}
 
-	public List<Seat> getDefaultSeats() {
-		return lugares;
-	}
-
 	public int getCapacity() {
 		return maxCapacity;
+	}
+
+	public void addActivity(EventActivity ea) {
+		activities.add(ea);
 	}
 	
 }

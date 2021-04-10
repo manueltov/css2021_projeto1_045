@@ -18,7 +18,7 @@ public class InstalacaoCatalog {
 
 	public Iterable<Instalacao> getInstalacoes() {
 		try {
-			TypedQuery<Instalacao> query = em.createNamedQuery(Instalacao.GET_ALL_NAMES, Instalacao.class);
+			TypedQuery<Instalacao> query = em.createNamedQuery(Instalacao.GET_ALL_INSTALACOES, Instalacao.class);
 			return query.getResultList();
 		} catch (Exception e) {
 			return new ArrayList<>(); 
@@ -27,7 +27,7 @@ public class InstalacaoCatalog {
 
 	public Instalacao getInstalacaoByName(String instalacao) throws InstalacaoNotFoundException {
 		try {
-			TypedQuery<Instalacao> query = em.createNamedQuery(Instalacao.FIND_BY_NAME, Instalacao.class);
+			TypedQuery<Instalacao> query = em.createNamedQuery(Instalacao.INSTALACAO_BY_NAME, Instalacao.class);
 			query.setParameter(Instalacao.INSTALACAO_NAME, instalacao);
 			return query.getSingleResult();
 		} catch (Exception e) {

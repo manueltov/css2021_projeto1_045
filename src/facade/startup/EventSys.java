@@ -5,8 +5,10 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import business.handlers.NewEventHandler;
+import business.handlers.SetInstalacaoHandler;
 import facade.exceptions.ApplicationException;
 import facade.services.EventService;
+import facade.services.InstalacaoService;
 
 public class EventSys {
 	
@@ -28,6 +30,10 @@ public class EventSys {
 
 	public EventService getEventService() {
 		return new EventService(new NewEventHandler(emf));
+	}
+	
+	public InstalacaoService getInstalacaoService() {
+		return new InstalacaoService(new SetInstalacaoHandler(emf));
 	}
 
 }

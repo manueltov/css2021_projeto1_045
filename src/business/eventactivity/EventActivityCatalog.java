@@ -1,6 +1,6 @@
 package business.eventactivity;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 
@@ -23,8 +23,10 @@ public class EventActivityCatalog {
 		TimeFrame[] dates = event.getDatas();
 		for (int i = 0; i < dates.length; i++) {
 			TimeFrame tf = dates[i];
-			EventActivity ea = new EventActivity(event, tf);
+			EventActivity ea = new EventActivity(event, tf,instalacao);
+			instalacao.addActivity(ea);
 			em.merge(ea);
+			em.merge(instalacao);
 		}
 		
 	}

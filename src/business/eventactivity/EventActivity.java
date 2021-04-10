@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import business.event.Event;
 import business.event.TimeFrame;
 import business.instalacao.Instalacao;
+import business.instalacao.InstalacaoSentada;
 import business.seat.Seat;
 import business.ticket.SeatTicket;
 import business.ticket.Ticket;
@@ -42,22 +43,25 @@ public class EventActivity {
 	
 	EventActivity() {}
 	
-	public EventActivity(Event event,TimeFrame timeFrame) {
+	public EventActivity(Event event,TimeFrame timeFrame,Instalacao instalacao) {
 		this.event = event;
 		this.timeFrame = timeFrame;
+		this.instalacao = instalacao;
 		tickets = new ArrayList<>();
-		instalacao = event.getInstalacao();
-		List<Seat> defaul_seats = event.getInstalacao().getDefaultSeats();
-		if(defaul_seats == null) {
-			for (int i = 0; i < event.getEventType().getMaxWatch(); i++) {
-				tickets.add(new Ticket(this,event.getIndividualPrice()));
+		if(instalacao instanceof InstalacaoSentada) {
+			InstalacaoSentada aux = (InstalacaoSentada) instalacao;
+			Seat[] seats = aux.getLugares();
+			for (int i = 0; i < seats.length; i++) {
+				Seat s = seats[i];
+				tickets.add(new SeatTicket(this,s,event.getIndividualPrice()));
 			}
 		}
 		else {
-			for (Seat s : defaul_seats) {
-				tickets.add(new SeatTicket(this,s, event.getIndividualPrice()));
+			for (int i = 0; i < instalacao.getCapacity(); i++) {
+				tickets.add(new Ticket(this, event.getIndividualPrice()));
 			}
 		}
+		
 	}
 	
 	public TimeFrame getTimeFrame() {

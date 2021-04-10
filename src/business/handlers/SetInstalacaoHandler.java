@@ -1,6 +1,6 @@
 package business.handlers;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +11,8 @@ import business.event.TimeFrame;
 import business.eventactivity.EventActivityCatalog;
 import business.instalacao.Instalacao;
 import business.instalacao.InstalacaoCatalog;
+import business.instalacao.InstalacaoSentada;
+import business.seat.SeatType;
 import dateUtils.DateUtils;
 import facade.exceptions.ApplicationException;
 
@@ -35,7 +37,7 @@ public class SetInstalacaoHandler {
 		}catch (Exception e) {
 			if(em.getTransaction().isActive())
 				em.getTransaction().rollback();
-			throw new ApplicationException("ERROR: Not possible to fetch instalacoes.");
+			throw new ApplicationException("ERROR: Not possible to fetch instalacoes.",e);
 		}
 		finally {
 			em.close();
@@ -65,11 +67,13 @@ public class SetInstalacaoHandler {
 		try {
 			em.getTransaction().begin();
 			Instalacao i = instalacaoCatalog.getInstalacaoByName(instalacao);
-			if(i.getEventType().getTipoDeLugares() != this.event.getEventType().getTipoDeLugares()) {
+			if((i instanceof InstalacaoSentada) && this.event.getEventType().getTipoDeLugares() != SeatType.SENTADO) {
 				throw new ApplicationException("Invalid instalacao for this type of event");
 			}
+			if(!(i instanceof InstalacaoSentada) && this.event.getEventType().getTipoDeLugares() == SeatType.SENTADO)
+				throw new ApplicationException("Invalid instalacao for this type of event");
 			if(i.getCapacity() > this.event.getEventType().getMaxWatch()) {
-				throw new ApplicationException("Invalid instalacao for this event");
+				throw new ApplicationException("Invalid instalacao for this event because of capacity");
 			}
 			TimeFrame[] datas = event.getDatas();
 			for (int j = 0; j < datas.length; j++) {
@@ -107,23 +111,35 @@ public class SetInstalacaoHandler {
 		em.merge(this.event);
 	}
 
-	public void setDate(Date d) throws ApplicationException {
-		if(!DateUtils.isPresent(d)) {
+	public void setDate(Date date) throws ApplicationException {
+		if(DateUtils.isPast(date)) {
 			throw new ApplicationException("Date can not be in the past.");
 		}
-		if(d.before(this.event.getFirstDate())) {
+		if(date.after(this.event.getFirstDate())) {
 			throw new ApplicationException("Date can not be after the first event date.");
 		}
-		this.saleDate = d;
+		this.saleDate = date;
 	}
 
-	public void setInstalacaoToEvent() {
+	public void setInstalacaoToEvent() throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		EventActivityCatalog eventActivityCatalog = new EventActivityCatalog(em);
 
-		em.getTransaction().begin();
-		eventActivityCatalog.createNewActivities(event,saleDate,instalacao);
-		em.getTransaction().commit();
+		try {
+			em.getTransaction().begin();
+			eventActivityCatalog.createNewActivities(event,saleDate,instalacao);
+			em.merge(event);
+			em.getTransaction().commit();
+		}catch (Exception e) {
+			if(em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			throw new ApplicationException("Not possible to set place to event",e);
+		}
+		finally {
+			em.close();
+		}
+	
 	}
 
 

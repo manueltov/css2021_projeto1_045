@@ -9,8 +9,8 @@ public class DateUtils {
 	
 	private static final Date present = convertLocalDateToDate(LocalDate.of(2021, 5, 1));
 
-	public static boolean isPresent(Date d) {
-		return d.after(present);
+	public static boolean isPast(Date d) {
+		return d.before(present);
 	}
 	
 	public static Date convertLocalDateToDate(LocalDate dateToConvert) {

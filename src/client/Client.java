@@ -10,9 +10,10 @@ import java.util.Date;
 import dateUtils.DateUtils;
 import dbutils.DatabaseUtils;
 import facade.services.EventService;
+import facade.services.InstalacaoService;
 import facade.startup.EventSys;
 
-public class Client {
+public class Client extends Thread{
 
 	public static void main(String[] args) throws IOException, SQLException {
 
@@ -31,10 +32,124 @@ public class Client {
 			results += test6(app);
 			System.out.println("----------END TESTING----------");
 			System.out.println("UC1\nRESULTS: "+results+"/6 "+((double) results/6.0)*100+"%");
+			sleep(1000);
+			results = 0;
+			System.out.println("---------TESTING UC2-----------");
+			results += test7(app);
+			results += test8(app);
+			results += test9(app);
+			results += test10(app);
+			results += test11(app);
+			System.out.println("----------END TESTING----------");
+			System.out.println("UC2\nRESULTS: "+results+"/5 "+((double) results/5.0)*100+"%");
+			sleep(1000);
+
+
 			app.stopRun();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static int test11(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			InstalacaoService is = app.getInstalacaoService();
+			is.getInstalacoes().forEach(System.out::println);
+			is.setEvent("Festival Estou de Ferias");
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 1));
+			is.setSaleDate(d);
+			is.setInstalacao("Pequeno Relvado");
+			is.setIndividualPrice(15);
+			is.setInstalacaoToEvento();
+			System.out.println("Test 11: Passed");
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Test 11: Failed");
+		}
+		return 0;
+	}
+
+	private static int test10(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			InstalacaoService is = app.getInstalacaoService();
+			is.getInstalacoes().forEach(System.out::println);
+			is.setEvent("Open dos Exames");
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 1));
+			is.setSaleDate(d);
+			is.setInstalacao("Mini Estadio");
+			is.setIndividualPrice(20);
+			is.setPassePrice(30);
+			is.setInstalacaoToEvento();
+			System.out.println("Test 10: Passed");
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Test 10: Failed");
+		}
+		return 0;
+	}
+
+	private static int test9(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			InstalacaoService is = app.getInstalacaoService();
+			is.getInstalacoes().forEach(System.out::println);
+			is.setEvent("Bye Semestre Y");
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 1));
+			is.setSaleDate(d);
+			is.setInstalacao("Micro Pavilhao");
+			is.setIndividualPrice(20);
+			System.out.println("Test 9: Failed");
+			return 0;
+		}catch (Exception e) {
+			System.out.println("Test 9: Passed");
+		}
+		return 1;
+	}
+
+	private static int test8(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			InstalacaoService is = app.getInstalacaoService();
+			is.getInstalacoes().forEach(System.out::println);
+			is.setEvent("Bye Semestre X");
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 1));
+			is.setSaleDate(d);
+			is.setInstalacao("Micro Pavilhao");
+			is.setIndividualPrice(20);
+			is.setInstalacaoToEvento();
+			System.out.println("Test 8: Passed");
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Test 8: Failed");
+		}
+		return 0;
+	}
+
+	private static int test7(EventSys app) {
+		try {
+			System.out.println("------------------------");
+			InstalacaoService is = app.getInstalacaoService();
+			is.getInstalacoes().forEach(System.out::println);
+			is.setEvent("Bye Semestre X");
+			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 1));
+			is.setSaleDate(d);
+			is.setInstalacao("Mini Estadio");
+			System.out.println("Test 7: Failed");
+			return 0;
+		}catch (Exception e) {
+			System.out.println("Test 7: Passed");
+		}
+		return 1;
+	}
+
+	@Override
+	public void run() {
+		//ignore warning
 	}
 
 	private static int test2(EventSys app) {
@@ -56,7 +171,6 @@ public class Client {
 			e.printStackTrace();
 			System.out.println("Test 2: Failed");
 		}
-		System.out.println("------------------------");
 		return 0;
 	}
 
@@ -69,7 +183,7 @@ public class Client {
 			es.setNome("Bye Semestre X");
 			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
 			Date inicio =  DateUtils.convertLocalDateTimeToDate(LocalDateTime.of(2021, 5, 9, 21, 0));
-				Date fim =  DateUtils.convertLocalDateTimeToDate(LocalDateTime.of(2021, 6, 9, 0, 0));
+			Date fim =  DateUtils.convertLocalDateTimeToDate(LocalDateTime.of(2021, 6, 9, 0, 0));
 			es.addDate(d,inicio, fim);
 			es.setEmpresa(1);
 			es.createEvent();
@@ -78,10 +192,9 @@ public class Client {
 		}catch (Exception e) {
 			System.out.println("Test 1: Failed");
 		}
-		System.out.println("------------------------");
 		return 0;
 	}
-	
+
 	private static int test3(EventSys app) {
 		try {
 			System.out.println("------------------------");
@@ -104,10 +217,9 @@ public class Client {
 		}catch (Exception e) {
 			System.out.println("Test 3: Failed");
 		}
-		System.out.println("------------------------");
 		return 0;
 	}
-	
+
 	private static int test4(EventSys app) {
 		try {
 			System.out.println("------------------------");
@@ -130,10 +242,9 @@ public class Client {
 		}catch (Exception e) {
 			System.out.println("Test 4: Passed");
 		}
-		System.out.println("------------------------");
 		return 1;
 	}
-	
+
 	private static int test5(EventSys app) {
 		try {
 			System.out.println("------------------------");
@@ -156,10 +267,9 @@ public class Client {
 		}catch (Exception e) {
 			System.out.println("Test 5: Passed");
 		}
-		System.out.println("------------------------");
 		return 1;
 	}
-	
+
 	private static int test6(EventSys app) {
 		try {
 			System.out.println("------------------------");
@@ -182,8 +292,7 @@ public class Client {
 		}catch (Exception e) {
 			System.out.println("Test 6: Failed");
 		}
-		System.out.println("------------------------");
 		return 0;
 	}
-	
+
 }
