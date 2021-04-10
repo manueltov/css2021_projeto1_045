@@ -9,12 +9,13 @@ import java.util.Date;
 import java.util.List;
 
 import business.event.TimeFrame;
-import business.seat.Seat;
 import dateUtils.DateUtils;
 import dbutils.DatabaseUtils;
+import facade.dto.SeatDTO;
 import facade.services.EventService;
 import facade.services.InstalacaoService;
-import facade.services.TicketService;
+import facade.services.PasseTicketService;
+import facade.services.IndividualTicketService;
 import facade.startup.EventSys;
 
 public class Client extends Thread{
@@ -57,28 +58,93 @@ public class Client extends Thread{
 			System.out.println("----------END TESTING----------");
 			System.out.println("UC3\nRESULTS: "+results+"/5 "+((double) results/5.0)*100+"%");
 			sleep(1000);
-
-
+			results = 0;
+			System.out.println("---------TESTING UC4-----------");
+			results += test17(app);
+			results += test18(app);
+			results += test19(app);
+			results += test20(app);
+			System.out.println("----------END TESTING----------");
+			System.out.println("UC4\nRESULTS: "+results+"/4 "+((double) results/4.0)*100+"%");
 			app.stopRun();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
+	private static int test20(EventSys app) {
+		try {
+			PasseTicketService pts = app.getPasseTicketService();
+			long n = pts.setEvento("Festival Estou de Ferias");
+			System.out.println("TICKET AVAILABLE:"+n);
+			System.out.println(pts.buy(4, "u7@gmail.com"));
+			System.out.println("Test 20: Failed");
+			return 0;
+		}catch (Exception e) {
+			System.out.println("Test 20: Passed");
+		}
+		return 1;
+	}
+
+	private static int test19(EventSys app) {
+		try {
+			PasseTicketService pts = app.getPasseTicketService();
+			long n = pts.setEvento("Festival Estou de Ferias");
+			System.out.println("TICKET AVAILABLE:"+n);
+			System.out.println(pts.buy(7, "u6@gmail.com"));
+			System.out.println("Test 19: Failed");
+			return 0;
+		}catch (Exception e) {
+			System.out.println("Test 19: Passed");
+		}
+		return 1;
+	}
+
+	private static int test18(EventSys app) {
+		try {
+			PasseTicketService pts = app.getPasseTicketService();
+			long n = pts.setEvento("Open dos exames");
+			System.out.println("TICKET AVAILABLE:"+n);
+			System.out.println(pts.buy(3, "u5@gmail.com"));
+			System.out.println("Test 18: Passed");
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Test 18: Failed");
+		}
+		return 0;
+	}
+
+	private static int test17(EventSys app) {
+		try {
+			PasseTicketService pts = app.getPasseTicketService();
+			long n = pts.setEvento("Open dos exames");
+			System.out.println("TICKETS AVAILABLE:"+n);
+			System.out.println(pts.buy(2, "u4@gmail.com"));
+			System.out.println("Test 17: Passed");
+			return 1;
+		}catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Test 17: Failed");
+		}
+		return 0;
+	}
+
 	private static int test16(EventSys app) {
 		try {
 			System.out.println("------------------------");
-			TicketService ts = app.getTicketService();
+			IndividualTicketService ts = app.getTicketService();
 			List<TimeFrame> tfs = ts.setEvento("Open dos exames");
 			Date d = tfs.get(0).getDate();
-			List<Seat> seats = ts.setDate(d);
-			Seat s1 = seats.get(0);
-			Seat s2 = seats.get(1);
+			List<SeatDTO> seats = ts.setDate(d);
+			SeatDTO s1 = seats.get(0);
+			SeatDTO s2 = seats.get(1);
 			if(!s1.getFila().contentEquals("A") || s1.getNumero() != 1 || !s2.getFila().contentEquals("A") || s2.getNumero() != 2)
 				throw new Exception("Wrong seats");
 			ts.addLugar(s1.getFila(), s1.getNumero());
 			ts.addLugar(s2.getFila(), s2.getNumero());
 			ts.setEmail("u3@gmail.com");
+			System.out.println(ts.reserveTickets());
 			System.out.println("Test 16: Passed");
 			return 1;
 		}catch (Exception e) {
@@ -91,12 +157,13 @@ public class Client extends Thread{
 	private static int test15(EventSys app) {
 		try {
 			System.out.println("------------------------");
-			TicketService ts = app.getTicketService();
+			IndividualTicketService ts = app.getTicketService();
 			ts.setEvento("Festival Estou de Ferias").forEach(System.out::println);
 			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
 			ts.setDate(d);
 			ts.addLugar("B", 1);
 			ts.setEmail("u2@gmail.com");
+			System.out.println(ts.reserveTickets());
 			System.out.println("Test 15: Failed");
 			return 0;
 		}catch (Exception e) {
@@ -108,12 +175,13 @@ public class Client extends Thread{
 	private static int test14(EventSys app) {
 		try {
 			System.out.println("------------------------");
-			TicketService ts = app.getTicketService();
+			IndividualTicketService ts = app.getTicketService();
 			ts.setEvento("Bye Semestre X").forEach(System.out::println);;
 			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
 			ts.setDate(d);
 			ts.addLugar("B", 2);
 			ts.setEmail("u2@gmail.com");
+			System.out.println(ts.reserveTickets());
 			System.out.println("Test 14: Passed");
 			return 1;
 		}catch (Exception e) {
@@ -126,12 +194,13 @@ public class Client extends Thread{
 	private static int test13(EventSys app) {
 		try {
 			System.out.println("------------------------");
-			TicketService ts = app.getTicketService();
+			IndividualTicketService ts = app.getTicketService();
 			ts.setEvento("Bye Semestre X").forEach(System.out::println);;
 			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
 			ts.setDate(d);
 			ts.addLugar("B", 1);
 			ts.setEmail("u2@gmail.com");
+			System.out.println(ts.reserveTickets());
 			System.out.println("Test 13: Failed");
 			return 0;
 		}catch (Exception e) {
@@ -143,7 +212,7 @@ public class Client extends Thread{
 	private static int test12(EventSys app) {
 		try {
 			System.out.println("------------------------");
-			TicketService ts = app.getTicketService();
+			IndividualTicketService ts = app.getTicketService();
 			ts.setEvento("Bye Semestre X").forEach(System.out::println);;
 			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 5, 9));
 			ts.setDate(d);
@@ -151,7 +220,7 @@ public class Client extends Thread{
 			ts.addLugar("A", 2);
 			ts.addLugar("B", 1);
 			ts.setEmail("u1@gmail.com");
-			ts.reserveTickets();
+			System.out.println(ts.reserveTickets());
 			System.out.println("Test 12: Passed");
 			return 1;
 		}catch (Exception e) {

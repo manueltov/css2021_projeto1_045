@@ -6,11 +6,13 @@ import javax.persistence.Persistence;
 
 import business.handlers.NewEventHandler;
 import business.handlers.SellIndividualTicketHandler;
+import business.handlers.SellPasseTicketHandler;
 import business.handlers.SetInstalacaoHandler;
 import facade.exceptions.ApplicationException;
 import facade.services.EventService;
 import facade.services.InstalacaoService;
-import facade.services.TicketService;
+import facade.services.PasseTicketService;
+import facade.services.IndividualTicketService;
 
 public class EventSys {
 	
@@ -38,8 +40,12 @@ public class EventSys {
 		return new InstalacaoService(new SetInstalacaoHandler(emf));
 	}
 
-	public TicketService getTicketService() {
-		return new TicketService(new SellIndividualTicketHandler(emf));
+	public IndividualTicketService getTicketService() {
+		return new IndividualTicketService(new SellIndividualTicketHandler(emf));
+	}
+
+	public PasseTicketService getPasseTicketService() {
+		return  new PasseTicketService(new SellPasseTicketHandler(emf));
 	}
 
 }

@@ -16,6 +16,7 @@ import business.instalacao.InstalacaoSentada;
 import business.seat.Seat;
 import business.ticket.SeatTicket;
 import business.ticket.SeatTicketCatalog;
+import facade.dto.FakePaymentINFO;
 import facade.exceptions.ApplicationException;
 
 public class SellIndividualTicketHandler {
@@ -108,7 +109,7 @@ public class SellIndividualTicketHandler {
 		this.email = email;
 	}
 	
-	public void reserveTickets() throws ApplicationException {
+	public FakePaymentINFO reserveTickets() throws ApplicationException {
 		EntityManager em = emf.createEntityManager();
 		SeatTicketCatalog seatTicketCatalog = new SeatTicketCatalog(em);
 		
@@ -118,6 +119,7 @@ public class SellIndividualTicketHandler {
 				seatTicketCatalog.reserve(email,st);
 			}
 			em.getTransaction().commit();
+			return new FakePaymentINFO(email);
 		}catch (Exception e) {
 			if(em.getTransaction().isActive())
 				em.getTransaction().rollback();

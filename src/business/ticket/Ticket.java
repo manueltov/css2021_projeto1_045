@@ -12,6 +12,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 import business.eventactivity.EventActivity;
 
@@ -19,9 +21,19 @@ import business.eventactivity.EventActivity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@NamedQueries({
+	@NamedQuery(name=Ticket.GET_OPEN_TICKET_OF_ACTIVITY, 
+    query="SELECT t FROM Ticket t WHERE t.eventActivity.id = :"+Ticket.EVENT_ACTIVITY_ID+
+    " and t.status = :"+Ticket.TICKET_STATUS)
+	
+})
 public class Ticket {
 
 
+	public static final String GET_OPEN_TICKET_OF_ACTIVITY = "ticket.getTicketOfActivity";
+	public static final String EVENT_ACTIVITY_ID = "id";
+	public static final String TICKET_STATUS = "status";
+	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	

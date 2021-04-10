@@ -14,7 +14,11 @@ import business.seat.Seat;
             " and st.seat.number = :"+SeatTicket.SEAT_TICKET_NUMBER+ " and st.eventActivity.id = :"+SeatTicket.EVENT_ACTIVITY_ID),
 	@NamedQuery(name=SeatTicket.GET_OPEN_SEATS_OF_ACTIVITY, 
     query="SELECT st.seat FROM SeatTicket st WHERE st.status = :"+SeatTicket.TICKET_STATUS+""
-    		+ " and st.eventActivity.id = :"+SeatTicket.EVENT_ACTIVITY_ID+" ORDER BY st.seat.row,st.seat.number")
+    		+ " and st.eventActivity.id = :"+SeatTicket.EVENT_ACTIVITY_ID+" ORDER BY st.seat.row,st.seat.number"),
+	@NamedQuery(name=SeatTicket.GET_OPEN_TICKET_OF_ACTIVITY, 
+    query="SELECT st FROM SeatTicket st WHERE st.eventActivity.id = :"+SeatTicket.EVENT_ACTIVITY_ID+
+    " and st.status = :"+SeatTicket.TICKET_STATUS)
+	
 })
 public class SeatTicket extends Ticket{
 	
@@ -24,6 +28,7 @@ public class SeatTicket extends Ticket{
 	public static final String SEAT_TICKET_NUMBER = "number";
 	public static final String EVENT_ACTIVITY_ID = "id";
 	public static final String GET_OPEN_SEATS_OF_ACTIVITY = "seatTicket.getOpenSeatsOfActivity";
+	public static final String GET_OPEN_TICKET_OF_ACTIVITY = "seatTicket.getTicketOfActivity";
 	
 	private Seat seat;
 	

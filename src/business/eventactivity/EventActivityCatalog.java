@@ -12,6 +12,7 @@ import business.exceptions.TicketNotFoundException;
 import business.exceptions.TimeFrameNotFoundException;
 import business.instalacao.Instalacao;
 import business.ticket.Ticket;
+import business.ticket.TicketStatus;
 
 public class EventActivityCatalog {
 
@@ -56,6 +57,7 @@ public class EventActivityCatalog {
 			query.setParameter(EventActivity.EVENT_ACTIVITY_TIME_FRAME_DATE, d);
 			return query.getResultList();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new TicketNotFoundException("Ticket of event id " + eventId + " does not exist", e);
 		}
 	}
@@ -67,7 +69,32 @@ public class EventActivityCatalog {
 			query.setParameter(EventActivity.EVENT_ACTIVITY_TIME_FRAME_DATE, d);
 			return query.getSingleResult();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new TicketNotFoundException("Ticket of event id " + id + " does not exist", e);
+		}
+	}
+
+	public long getNumberOfBilhetesPasseEmPe(int id) throws TicketNotFoundException {
+		try {
+			TypedQuery<Long> query = em.createNamedQuery(EventActivity.GET_NUMBER_OF_TICKETS_AVAILABLE, Long.class);
+			query.setParameter(EventActivity.EVENT_ACTIVITY_EVENT_ID, id);
+			query.setParameter(EventActivity.TICKETS_STATUS, TicketStatus.AVAILABLE);
+			return query.getSingleResult();		
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new TicketNotFoundException("Ticket of event with id " + id + " does not exist", e);
+		}
+	}
+
+	public long getNumberOfBilhetesPasseSentado(int id) throws TicketNotFoundException {
+		try {
+			TypedQuery<Long> query = em.createNamedQuery(EventActivity.GET_NUMBER_OF_TICKETS_AVAILABLE_SEAT, Long.class);
+			query.setParameter(EventActivity.EVENT_ACTIVITY_EVENT_ID, id);
+			query.setParameter(EventActivity.TICKETS_STATUS, TicketStatus.AVAILABLE);
+			return query.getSingleResult();		
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new TicketNotFoundException("Ticket of event with id " + id + " does not exist", e);
 		}
 	}
 	

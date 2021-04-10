@@ -31,7 +31,16 @@ import business.ticket.Ticket;
     query="SELECT ea.timeFrame FROM eventActivity ea WHERE ea.event.id = :"+EventActivity.EVENT_ACTIVITY_EVENT_ID),
 	@NamedQuery(name=EventActivity.GET_ACTIVITY_OF_EVENT_DATE, 
     query="SELECT ea FROM eventActivity ea WHERE ea.event.id = :"+EventActivity.EVENT_ACTIVITY_EVENT_ID+
-    " and ea.timeFrame.date = :"+EventActivity.EVENT_ACTIVITY_TIME_FRAME_DATE)
+    " and ea.timeFrame.date = :"+EventActivity.EVENT_ACTIVITY_TIME_FRAME_DATE),
+	@NamedQuery(name = EventActivity.GET_NUMBER_OF_TICKETS_AVAILABLE,
+	query = "SELECT MIN( SELECT COUNT(t) FROM Ticket t WHERE t.eventActivity.id = ea.id and t.status = :"+EventActivity.TICKETS_STATUS+")"
+			+ " FROM eventActivity ea WHERE ea.event.id = :"+EventActivity.EVENT_ACTIVITY_EVENT_ID),
+	@NamedQuery(name = EventActivity.GET_NUMBER_OF_TICKETS_AVAILABLE_SEAT,
+	query = "SELECT MIN( SELECT COUNT(t) FROM SeatTicket t WHERE t.eventActivity.id = ea.id and t.status = :"+EventActivity.TICKETS_STATUS+")"
+			+ " FROM eventActivity ea WHERE ea.event.id = :"+EventActivity.EVENT_ACTIVITY_EVENT_ID),
+	@NamedQuery(name = EventActivity.GET_ACTIVITIES_OF_EVENT,
+	query = "SELECT ea FROM eventActivity ea WHERE ea.event.id = :"+EventActivity.EVENT_ACTIVITY_EVENT_ID)
+	
 })
 public class EventActivity {
 	
@@ -40,7 +49,10 @@ public class EventActivity {
 	public static final String EVENT_ACTIVITY_EVENT_ID = "event";
 	public static final String EVENT_ACTIVITY_TIME_FRAME_DATE = "date";
 	public static final String GET_ACTIVITY_OF_EVENT_DATE = "eventActivity.getActivityOfEventDate";
-	
+	public static final String GET_NUMBER_OF_TICKETS_AVAILABLE = "eventActivity.getNumberOfTicketsAvailable";
+	public static final String TICKETS_STATUS = "status";
+	public static final String GET_NUMBER_OF_TICKETS_AVAILABLE_SEAT = "eventActivity.getNumberOfTicketsAvailableSeat";
+	public static final String GET_ACTIVITIES_OF_EVENT = "eventActivity.getActivitiesOfEvent";
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
