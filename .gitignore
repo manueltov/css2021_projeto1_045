@@ -1,8 +1,0 @@
-/target/
-.classpath
-.project
-.settings
-data
-derby.log
-.idea
-*.iml
