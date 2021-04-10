@@ -57,6 +57,13 @@ public class SellIndividualTicketHandler {
 		try {
 			em.getTransaction().begin();
 			
+			return null;
+		}catch (Exception e) {
+
+			throw new ApplicationException("",e);
+		}
+		finally {
+			em.close();
 		}
 	}
 	
@@ -67,10 +74,6 @@ public class SellIndividualTicketHandler {
 		
 		EntityManager em = emf.createEntityManager();
 		SeatCatalog seatCatalog = new SeatCatalog(em);
-		
-		try {
-			em.gettr
-		}
 	}
 	
 }
