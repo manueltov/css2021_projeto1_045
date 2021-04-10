@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><entities>
 	<entity>
-		<entity-name>business.ticket.SeatTicket</entity-name>
+		<entity-name>business.company.Company</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>70</entity-height>
-		<entity-X-Coordinate>639</entity-X-Coordinate>
-		<entity-Y-Coordinate>490</entity-Y-Coordinate>
+		<entity-height>146</entity-height>
+		<entity-X-Coordinate>128</entity-X-Coordinate>
+		<entity-Y-Coordinate>50</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>business.event.Event</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>286</entity-height>
+		<entity-X-Coordinate>490</entity-X-Coordinate>
+		<entity-Y-Coordinate>50</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -14,30 +25,8 @@
 		<entity-name>business.event.TimeFrame</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>110</entity-height>
-		<entity-X-Coordinate>639</entity-X-Coordinate>
-		<entity-Y-Coordinate>-40</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>business.instalacao.Instalacao</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>206</entity-height>
-		<entity-X-Coordinate>162</entity-X-Coordinate>
-		<entity-Y-Coordinate>285</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>business.event.Event</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>266</entity-height>
-		<entity-X-Coordinate>337</entity-X-Coordinate>
-		<entity-Y-Coordinate>-4</entity-Y-Coordinate>
+		<entity-X-Coordinate>660</entity-X-Coordinate>
+		<entity-Y-Coordinate>14</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -47,30 +36,8 @@
 		<entity-name>business.eventactivity.EventActivity</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>186</entity-height>
-		<entity-X-Coordinate>820</entity-X-Coordinate>
+		<entity-X-Coordinate>896</entity-X-Coordinate>
 		<entity-Y-Coordinate>100</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>business.empresa.Empresa</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>108</entity-height>
-		<entity-X-Coordinate>20</entity-X-Coordinate>
-		<entity-Y-Coordinate>-22</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
-		<entity-name>business.ticket.Ticket</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>166</entity-height>
-		<entity-X-Coordinate>600</entity-X-Coordinate>
-		<entity-Y-Coordinate>279</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -80,8 +47,30 @@
 		<entity-name>business.eventtype.EventType</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>148</entity-height>
-		<entity-X-Coordinate>20</entity-X-Coordinate>
-		<entity-Y-Coordinate>185</entity-Y-Coordinate>
+		<entity-X-Coordinate>104</entity-X-Coordinate>
+		<entity-Y-Coordinate>232</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>business.installation.Installation</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>166</entity-height>
+		<entity-X-Coordinate>230</entity-X-Coordinate>
+		<entity-Y-Coordinate>454</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>business.installation.SeatedInstallation</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>70</entity-height>
+		<entity-X-Coordinate>81</entity-X-Coordinate>
+		<entity-Y-Coordinate>468</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -91,8 +80,30 @@
 		<entity-name>business.seat.Seat</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>166</entity-height>
-		<entity-X-Coordinate>430</entity-X-Coordinate>
-		<entity-Y-Coordinate>430</entity-Y-Coordinate>
+		<entity-X-Coordinate>490</entity-X-Coordinate>
+		<entity-Y-Coordinate>438</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>business.ticket.SeatTicket</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>70</entity-height>
+		<entity-X-Coordinate>670</entity-X-Coordinate>
+		<entity-Y-Coordinate>543</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
+		<entity-name>business.ticket.Ticket</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>186</entity-height>
+		<entity-X-Coordinate>811</entity-X-Coordinate>
+		<entity-Y-Coordinate>351</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>

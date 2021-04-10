@@ -75,7 +75,7 @@ public class Client extends Thread{
 	private static int test20(EventSys app) {
 		try {
 			PassTicketService pts = app.getPassTicketService();
-			long n = pts.setEvento("Festival Estou de Ferias");
+			long n = pts.setEvent("Festival Estou de Ferias");
 			System.out.println("TICKET AVAILABLE:"+n);
 			System.out.println(pts.buy(4, "u7@gmail.com"));
 			System.out.println("Test 20: Failed");
@@ -89,7 +89,7 @@ public class Client extends Thread{
 	private static int test19(EventSys app) {
 		try {
 			PassTicketService pts = app.getPassTicketService();
-			long n = pts.setEvento("Festival Estou de Ferias");
+			long n = pts.setEvent("Festival Estou de Ferias");
 			System.out.println("TICKET AVAILABLE:"+n);
 			System.out.println(pts.buy(7, "u6@gmail.com"));
 			System.out.println("Test 19: Failed");
@@ -103,7 +103,7 @@ public class Client extends Thread{
 	private static int test18(EventSys app) {
 		try {
 			PassTicketService pts = app.getPassTicketService();
-			long n = pts.setEvento("Open dos exames");
+			long n = pts.setEvent("Open dos exames");
 			System.out.println("TICKET AVAILABLE:"+n);
 			System.out.println(pts.buy(3, "u5@gmail.com"));
 			System.out.println("Test 18: Passed");
@@ -118,7 +118,7 @@ public class Client extends Thread{
 	private static int test17(EventSys app) {
 		try {
 			PassTicketService pts = app.getPassTicketService();
-			long n = pts.setEvento("Open dos exames");
+			long n = pts.setEvent("Open dos exames");
 			System.out.println("TICKETS AVAILABLE:"+n);
 			System.out.println(pts.buy(2, "u4@gmail.com"));
 			System.out.println("Test 17: Passed");
@@ -454,7 +454,7 @@ public class Client extends Thread{
 		try {
 			System.out.println("------------------------");
 			EventService es = app.getEventService();
-			es.tryCreateEvent().forEach(System.out::println);
+			es.tryCreateEvent().forEach(System.out::println); //Recebe lista tipo de eventos
 			es.setTypeOfEvent("MultidaoEmPe");
 			es.setName("Festival Estou de Ferias");
 			Date d = DateUtils.convertLocalDateToDate(LocalDate.of(2021, 7, 31));

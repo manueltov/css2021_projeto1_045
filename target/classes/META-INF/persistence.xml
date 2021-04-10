@@ -1,28 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
-	<persistence-unit transaction-type="RESOURCE_LOCAL"
-		name="domain-model-jpa">
-		<class>business.company.Company</class>
-		<class>business.event.Event</class>
-		<class>business.event.TimeFrame</class>
-		<class>business.eventactivity.EventActivity</class>
-		<class>business.eventtype.EventType</class>
-		<class>business.installation.Installation</class>
-		<class>business.seat.Seat</class>
-		<class>business.ticket.Ticket</class>
-		<class>business.ticket.SeatTicket</class>
-		<class>business.installation.SeatedInstallation</class>
-		<properties>
-			<property name="javax.persistence.jdbc.url"
-				value="jdbc:mysql://dbserver.alunos.di.fc.ul.pt:3306/css045" />
-			<property name="javax.persistence.jdbc.user" value="css045" />
-			<property name="javax.persistence.jdbc.driver"
-				value="com.mysql.cj.jdbc.Driver" />
-			<property name="javax.persistence.jdbc.password"
-				value="css045123" />
-		</properties>
-	</persistence-unit>
+<?xml version="1.0" encoding="utf-8"?>
+<persistence xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+    <persistence-unit transaction-type="RESOURCE_LOCAL" name="domain-model-jpa">
+        <class>business.company.Company</class>
+        <class>business.event.Event</class>
+        <class>business.event.TimeFrame</class>
+        <class>business.eventactivity.EventActivity</class>
+        <class>business.eventtype.EventType</class>
+        <class>business.installation.Installation</class>
+        <class>business.installation.SeatedInstallation</class>
+        <class>business.seat.Seat</class>
+        <class>business.ticket.SeatTicket</class>
+        <class>business.ticket.Ticket</class>
+        <properties>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://dbserver.alunos.di.fc.ul.pt:3306/css045" />
+            <property name="javax.persistence.jdbc.user" value="css045" />
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.password" value="css045123" />
+        </properties>
+    </persistence-unit>
 </persistence>

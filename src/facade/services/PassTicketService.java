@@ -12,7 +12,7 @@ public class PassTicketService {
 		this.sellPassTicketHandler = sellPassTicketHandler;
 	}
 	
-	public long setEvento(String event) throws ApplicationException {
+	public long setEvent(String event) throws ApplicationException {
 		return this.sellPassTicketHandler.setEvent(event);
 	}
 	
